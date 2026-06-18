@@ -6,31 +6,28 @@ use App\Models\Product;
 
 class ProductService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
     public function getAllProducts()
     {
-        $products = Product::all();
-        if (empty($products)) {
-            return [];
-        }
-        return $products;
+        return Product::with(['category', 'variants'])->orderBy('id')->get();
     }
+
+    public function findBySlug(string $slug): Product
+    {
+        return Product::with(['category', 'variants'])->where('slug', $slug)->firstOrFail();
+    }
+
     public function store(array $data)
     {
-        $products = Product::create($data);
-        return $products;
+        $product = Product::create($data);
+        return $product->load(['category', 'variants']);
     }
+
     public function update(array $data, Product $product)
     {
         $product->update($data);
-        return $product;
+        return $product->load(['category', 'variants']);
     }
+
     public function delete(Product $product)
     {
         $product->delete();

@@ -12,70 +12,59 @@ use Exception;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    private $CategoryService;
+    private CategoryService $categoryService;
+
     public function __construct(CategoryService $categoryService)
     {
-        $this->CategoryService = $categoryService;
+        $this->categoryService = $categoryService;
     }
+
     public function index()
     {
         try {
-            $categories = $this->CategoryService->getAllCategories();
-            $result = CategoryResource::collection($categories);
-            return ResponseHelper::SuccessResponse($result, 'data fetched successfully', 200);
+            $categories = $this->categoryService->getAllCategories();
+            return ResponseHelper::SuccessResponse(CategoryResource::collection($categories), 'data fetched successfully', 200);
         } catch (Exception $e) {
             return ResponseHelper::FailureResponse(null, $e->getMessage());
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        try {
+            $category = $this->categoryService->store($request->validated());
+            return ResponseHelper::SuccessResponse(CategoryResource::make($category), 'Category created successfully', 201);
+        } catch (Exception $e) {
+            return ResponseHelper::FailureResponse(null, $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Category $category)
     {
-        //
+        try {
+            return ResponseHelper::SuccessResponse(CategoryResource::make($category), 'data fetched successfully', 200);
+        } catch (Exception $e) {
+            return ResponseHelper::FailureResponse(null, $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        try {
+            $category = $this->categoryService->update($request->validated(), $category);
+            return ResponseHelper::SuccessResponse(CategoryResource::make($category), 'Category updated successfully', 200);
+        } catch (Exception $e) {
+            return ResponseHelper::FailureResponse(null, $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $this->categoryService->delete($category);
+            return ResponseHelper::SuccessResponse(null, 'Category deleted successfully', 200);
+        } catch (Exception $e) {
+            return ResponseHelper::FailureResponse(null, $e->getMessage());
+        }
     }
 }

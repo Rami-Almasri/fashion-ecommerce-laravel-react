@@ -59,6 +59,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         try {
+            $product->load(['category', 'variants']);
             $result = ProductResource::make($product);
             return ResponseHelper::SuccessResponse($result, 'data fetched successfully', 200);
         } catch (Exception $e) {

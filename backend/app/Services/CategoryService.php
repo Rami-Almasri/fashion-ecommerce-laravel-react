@@ -6,23 +6,25 @@ use App\Models\Category;
 
 class CategoryService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
     public function getAllCategories()
     {
-        $categories = Category::all();
-        if (empty($categories)) {
-            return [];
-        }
-        return $categories;
+        return Category::withCount('products')->orderBy('id')->get();
     }
-    public function store(array $data)
+
+    public function store(array $data): Category
     {
-        Category::create($data);
+        return Category::create($data);
+    }
+
+    public function update(array $data, Category $category): Category
+    {
+        $category->update($data);
+        return $category;
+    }
+
+    public function delete(Category $category): Category
+    {
+        $category->delete();
+        return $category;
     }
 }

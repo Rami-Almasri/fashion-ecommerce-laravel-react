@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# PETIT MONDE — Storefront (React + Vite)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A premium children's-fashion storefront built with **React 18, Vite, Tailwind CSS,
+Framer Motion and React Router**. It talks to the Laravel API in `../backend` and
+gracefully falls back to a bundled catalog when the API is offline, so it always
+renders.
 
-## Available Scripts
+## Quick start
 
-In the project directory, you can run:
+```bash
+npm install
+npm run dev        # http://localhost:3000
+```
 
-### `npm start`
+```bash
+npm run build      # production build to dist/
+npm run preview    # serve the production build
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> If `npm install` warns about a blocked `esbuild` install script, run
+> `npm approve-scripts esbuild` once, then `npm install` again.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Configuration
 
-### `npm test`
+Copy `.env.example` to `.env` to point at a different API:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+VITE_API_URL=http://localhost:8000/api
+```
 
-### `npm run build`
+## What's inside
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Area | Highlights |
+| --- | --- |
+| **Home** | Animated hero, brand marquee, category edit, new arrivals, editorial split, bestsellers, testimonials, newsletter |
+| **Shop** | Filter by category / type / season / colour / price, live search, sorting, mobile filter drawer |
+| **Product** | Image gallery, colour & size variant selection, live stock + size guide, related products |
+| **Cart** | Slide-out drawer + full cart page, free-shipping progress, promo codes |
+| **Checkout** | Multi-step flow (contact → shipping → payment) with order confirmation |
+| **Account** | Login / signup (wired to Sanctum), order history, wishlist |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+State (cart, wishlist, auth) is persisted to `localStorage` via React context.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project structure
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src/
+  components/   reusable UI (Navbar, Footer, CartDrawer, ProductCard, …)
+  context/      Cart, Wishlist, Auth, Toast providers
+  data/         bundled fallback catalog (mirrors the backend seeders)
+  hooks/        useProducts / useProduct data hooks
+  lib/          axios API client + utilities
+  pages/        route screens
+```
